@@ -219,6 +219,7 @@ module FileUtils
 
       stack = []
       until path == stack.last   # dirname("/")=="/", dirname("C:/")=="C:/"
+        break if File.directory?(path)
         stack.push path
         path = File.dirname(path)
       end
@@ -226,7 +227,7 @@ module FileUtils
         begin
           fu_mkdir dir, options[:mode]
         rescue SystemCallError
-          raise unless File.directory?(dir)
+          raise
         end
       end
     end
